@@ -41,73 +41,103 @@ HTML_TEMPLATE = """
             margin: 0;
             padding: 0;
             background-color: #f0f2f5;
-        }
-        .container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            flex-direction: column;
+            min-height: 100vh; /* Assure que le body prend au moins toute la hauteur de l'écran */
         }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px; /* Ajoute un peu de marge autour du contenu sur les petits écrans */
+            width: 90%; /* Prend 90% de la largeur sur les petits écrans */
+            max-width: 450px; /* Limite la largeur maximale sur les grands écrans */
+        }
+
         .logo {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
-        .logo img {
-            width: 240px;
+
+        .logo h1 {
+            color: #1877f2;
+            font-size: 48px; /* Augmente la taille du logo */
+            margin-bottom: 0;
         }
+
         .login-container {
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            width: 396px;
+            width: 100%; /* Prend toute la largeur du conteneur parent */
+            margin-bottom: 20px; /* Ajoute de l'espace en dessous du formulaire */
         }
+
+        .login-container h2 {
+            color: #1c1e21;
+            font-size: 24px; /* Réduit légèrement la taille du titre */
+            font-weight: normal;
+            margin: 0 0 20px 0;
+            text-align: center; /* Centre le titre sur les petits écrans */
+        }
+
         .form-group {
             margin-bottom: 15px;
         }
-        input[type="text"], input[type="password"] {
-            width: 100%;
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 32px); /* Prend toute la largeur moins le padding */
             padding: 14px 16px;
             border-radius: 6px;
             border: 1px solid #dddfe2;
-            font-size: 17px;
+            font-size: 16px; /* Légèrement plus petit */
             box-sizing: border-box;
         }
+
         button {
             background-color: #1877f2;
             border: none;
             border-radius: 6px;
             color: white;
-            font-size: 20px;
+            font-size: 18px; /* Légèrement plus petit */
             font-weight: bold;
             padding: 12px;
             width: 100%;
             cursor: pointer;
         }
+
         .forgot-password {
             text-align: center;
             margin: 16px 0;
         }
+
         .forgot-password a {
             color: #1877f2;
             text-decoration: none;
             font-size: 14px;
         }
+
         .divider {
             border-bottom: 1px solid #dadde1;
             margin: 20px 0;
         }
+
         .create-account {
             text-align: center;
         }
+
         .create-account button {
             background-color: #42b72a;
-            font-size: 17px;
+            font-size: 16px; /* Légèrement plus petit */
             padding: 10px 16px;
             width: auto;
-            margin-top: 6px;
+            margin-top: 10px;
         }
+
         .phishing-alert {
             background-color: #ffcccc;
             color: #cc0000;
@@ -116,15 +146,64 @@ HTML_TEMPLATE = """
             margin-top: 20px;
             border-radius: 6px;
             font-weight: bold;
+            font-size: 14px; /* Légèrement plus petit */
+        }
+
+        p {
+            font-size: 12px; /* Encore plus petit pour les petits écrans */
+            color: #606770;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* Media queries pour les écrans plus petits */
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 36px;
+            }
+            .login-container h2 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 32px;
+            }
+            .login-container {
+                padding: 15px;
+            }
+            input[type="text"],
+            input[type="password"] {
+                padding: 12px 14px;
+                font-size: 15px;
+            }
+            button {
+                font-size: 16px;
+                padding: 10px;
+            }
+            .forgot-password a {
+                font-size: 13px;
+            }
+            .create-account button {
+                font-size: 15px;
+                padding: 8px 14px;
+            }
+            .phishing-alert {
+                font-size: 12px;
+            }
+            p {
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">
-            <h1 style="color: #1877f2; font-size: 40px; margin-bottom: 0;">facebook</h1>
+            <h1>facebook</h1>
         </div>
-        <h2 style="color: #1c1e21; font-size: 28px; font-weight: normal; margin: 0 0 20px 0;">Connectez-vous avec Facebook</h2>
+        <h2>Connectez-vous avec Facebook</h2>
         <div class="login-container">
             <form method="post" action="/login">
                 <div class="form-group">
@@ -141,16 +220,16 @@ HTML_TEMPLATE = """
                 </div>
                 <div class="divider"></div>
                 <div class="create-account">
-                    <button type="button" style="background-color: #42b72a;">Créer nouveau compte</button>
+                    <button type="button">Créer nouveau compte</button>
                 </div>
             </form>
         </div>
-        
+
         <div class="phishing-alert">
             DÉMO ÉDUCATIVE DE PHISHING - NE PAS ENTRER DE VRAIS IDENTIFIANTS
         </div>
-        
-        <p style="font-size: 14px; color: #606770; text-align: center; margin-top: 20px;">
+
+        <p>
             Ce site est une démo éducative pour montrer comment fonctionne le phishing.<br>
             Il ne s'agit PAS d'un vrai site Facebook et il ne doit pas être utilisé pour collecter de vrais identifiants.
         </p>
