@@ -21,7 +21,7 @@ L'auteur n'assume aucune responsabilité pour toute utilisation abusive de ce co
 from flask import Flask, request, render_template_string, redirect
 import os
 import datetime
-import argparse
+
 import socket
 import webbrowser
 
@@ -233,9 +233,5 @@ def main():
     app.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
-    confirmation = input("Confirmez que vous utilisez ce script UNIQUEMENT à des fins éducatives légitimes (o/n): ")
-    if confirmation.lower() != 'o':
-        print("Opération annulée.")
-        exit(1)
-        
-    main()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
